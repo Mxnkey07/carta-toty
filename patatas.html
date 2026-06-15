@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kebabs - TOTY 2</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Pega aquí exactamente todo tu bloque <style> que tienes en el index.html -->
+    <style>
+       /* --- COLORES Y ESTILOS BÁSICOS --- */
+        :root {
+            --primario: #E63946; /* Rojo oscuro */
+            --fondo: #F8F9FA;    /* Blanco roto para el fondo */
+            --tarjeta: #FFFFFF;  /* Blanco puro para las tarjetas */
+            --texto-principal: #1D3557;
+            --texto-secundario: #6C757D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth; /* Deslizamiento suave entre secciones */
+        }
+
+        body {
+            background-color: var(--fondo);
+            color: var(--texto-principal);
+            padding-bottom: 50px;
+        }
+
+        /* --- CABECERA --- */
+        header {
+            background-color: var(--primario);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* --- MENÚ SUPERIOR DESLIZABLE --- */
+        .categorias-nav {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            scrollbar-width: none;
+        }
+        .categorias-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .categoria-btn {
+            background: var(--fondo);
+            color: var(--texto-principal);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            white-space: nowrap;
+            border: 1px solid #ddd;
+        }
+
+        /* --- SECCIONES --- */
+        .menu-seccion {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .menu-seccion h2 {
+            font-size: 1.8rem;
+            color: var(--primario);
+            border-bottom: 2px solid var(--primario);
+            padding-bottom: 5px;
+            margin: 20px 0 15px 0;
+        }
+
+        /* --- TARJETAS DE LOS PLATOS --- */
+        .plato-card {
+            background: var(--tarjeta);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+            
+            /* Usamos Flexbox para poner texto a la izquierda y foto a la derecha */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px; /* Espacio entre el texto y la foto */
+        }
+
+        .plato-contenido {
+            flex: 1; /* Hace que el texto ocupe todo el espacio disponible */
+        }
+
+        /* Contenedor de la foto del plato */
+        .plato-img-caja {
+            width: 90px;  /* Ancho de la foto */
+            height: 90px; /* Alto de la foto */
+            flex-shrink: 0; /* Evita que la foto se aplaste si hay mucho texto */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .plato-img-caja img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Muestra la imagen entera sin recortar nada */
+            background-color: #ffffff; /* Fondo blanco por si la foto no es cuadrada */
+        }
+
+        .plato-titulo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .plato-desc {
+            font-size: 0.85rem;
+            color: var(--texto-secundario);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        /* --- LISTA DE PRECIOS DOBLES --- */
+        .precios-contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background-color: #fcfcfc;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .precio-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 3px 0;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .precio-row:last-child {
+            border-bottom: none;
+        }
+
+        .precio-valor {
+            font-weight: 700;
+            color: var(--primario);
+        }
+-
+    </style>
+</head>
+<body>
+
+    <!-- CABECERA IDÉNTICA -->
+    <header>
+        <h1>TOTY 2</h1>
+        <p>Pizzería - Bocatería</p>
+    </header>
+
+    <!-- NAVEGACIÓN ACTUALIZADA (Igual que en index.html) -->
+    <nav class="categorias-nav">
+        <a href="carta.html" class="categoria-btn">Pizzas</a>
+        <a href="kebabs.html" class="categoria-btn">Kebabs</a>
+        <a href="platos.html" class="categoria-btn">Platos</a>
+        <a href="patatas.html" class="categoria-btn">Patatas</a>
+        <a href="hamburguesas.html" class="categoria-btn">Hamburguesas</a>
+        <a href="pollo.html" class="categoria-btn">pollo</a>
+        <a href="bocadillos.html" class="categoria-btn">Bocadillos</a>
+        <a href="ensaladas.html" class="categoria-btn">Ensaladas</a>
+    </nav>
+
+    <!-- CONTENIDO ESPECÍFICO DE ESTA PÁGINA -->
+    <main>
+        <section class="menu-seccion">
+            <h2>Patatas</h2>
+            
+            <!-- Aquí empiezas a pegar tus tarjetas de Kebabs -->
+            <div class="plato-card">
+                
+                <!-- PARTE IZQUIERDA: Textos y precios -->
+                <div class="plato-contenido">
+                    <h3 class="plato-titulo">96. Patatas fritas pequeñas</h3>
+                    <p class="plato-desc">Patatas fritas, sal y salsa (Blanca yogur y roja picante)</p>
+                    <div class="precios-contenedor">
+                        <div class="precio-row"><span>Normal</span> <span class="precio-valor">2,00€</span></div>
+                    </div>
+                </div>
+
+                <!-- PARTE DERECHA: Foto del plato -->
+                <div class="plato-img-caja">
+                    <img src="patatas/foto-patatas-96.png" alt="Patatas fritas">
+                </div>
+
+            </div>
+            <div class="plato-card">
+                <div class="plato-contenido">
+                    <h3 class="plato-titulo">96A. Patatas fritas medianas</h3>
+                    <p class="plato-desc">Patatas fritas, sal y salsa (Blanca yogur y roja picante)</p>
+                    <div class="precios-contenedor">
+                        <div class="precio-row"><span>Mediana</span> <span class="precio-valor">2,50€</span></div>
+                    </div>
+                </div>
+                <div class="plato-img-caja">
+                    <img src="patatas/foto-patatas-96A.png" alt="Patatas fritas">
+                </div>
+
+            </div>
+            <div class="plato-card">
+                <div class="plato-contenido">
+                    <h3 class="plato-titulo">96B. Patatas fritas Grandes</h3>
+                    <p class="plato-desc">Patatas fritas, sal y salsa (Blanca yogur y roja picante)</p>
+                    <div class="precios-contenedor">
+                        <div class="precio-row"><span>Grande</span> <span class="precio-valor">3,50€</span></div>
+                    </div>
+                </div>
+                <div class="plato-img-caja">
+                    <img src="patatas/foto-patatas-96B.png" alt="Patatas fritas">
+                </div>
+
+            </div>
+            <div class="plato-card">
+                <div class="plato-contenido">
+                    <h3 class="plato-titulo">97A. Pollo con patatas y queso gratinado</h3>
+                    <p class="plato-desc">Carne mixta, queso gratinado, Patatas fritas y salsa (Blanca yogur y roja picante)</p>
+                    <div class="precios-contenedor">
+                        <div class="precio-row"><span>Tamaño unico</span> <span class="precio-valor">5,50€</span></div>
+                    </div>
+                </div>
+                <div class="plato-img-caja">
+                    <img src="patatas/bandeja-gratinada.png" alt="Patatas fritas">
+                </div>
+
+            </div>
+            <div class="plato-card">
+                <div class="plato-contenido">
+                    <h3 class="plato-titulo">99. Toty especial de la casa</h3>
+                    <p class="plato-desc">Bacon, queso gratinado, Patatas fritas y salsa (Blanca yogur y roja picante)</p>
+                    <div class="precios-contenedor">
+                        <div class="precio-row"><span>Tamaño unico</span> <span class="precio-valor">5,50€</span></div>
+                    </div>
+                </div>
+                <div class="plato-img-caja">
+                    <img src="patatas/bandeja-bacon.png" alt="Patatas fritas">
+                </div>
+
+            </div>
+            <div class="plato-card">
+                <div class="plato-contenido">
+                    <h3 class="plato-titulo">99A. Patatas de Lux</h3>
+                    <p class="plato-desc">Patatas de Lux, sal y salsa (Blanca yogur y roja picante)</p>
+                    <div class="precios-contenedor">
+                        <div class="precio-row"><span>Pequeña</span> <span class="precio-valor">3,00€</span></div>
+                        <div class="precio-row"><span>Grande</span> <span class="precio-valor">6,00€</span></div>
+                    </div>
+                </div>
+                <div class="plato-img-caja">
+                    <img src="patatas/lux.png" alt="Patatas fritas">
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+
+</body>
+</html>

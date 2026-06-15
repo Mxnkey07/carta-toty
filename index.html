@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - TOTY 2</title>
+    <!-- Cargamos una fuente moderna para que se vea profesional -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- COLORES Y ESTILOS BÁSICOS --- */
+        :root {
+            --primario: #E63946; /* Rojo oscuro */
+            --fondo: #F8F9FA;    /* Blanco roto para el fondo */
+            --tarjeta: #FFFFFF;  /* Blanco puro para las tarjetas */
+            --texto-principal: #1D3557;
+            --texto-secundario: #6C757D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth; /* Deslizamiento suave entre secciones */
+        }
+
+        body {
+            background-color: var(--fondo);
+            color: var(--texto-principal);
+            padding-bottom: 50px;
+        }
+
+        /* --- CABECERA --- */
+        header {
+            background-color: var(--primario);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* --- MENÚ SUPERIOR DESLIZABLE --- */
+        .categorias-nav {
+            display: flex;
+            overflow-x: auto;
+            background: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            gap: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            scrollbar-width: none;
+        }
+        .categorias-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .categoria-btn {
+            background: var(--fondo);
+            color: var(--texto-principal);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            white-space: nowrap;
+            border: 1px solid #ddd;
+        }
+
+        /* --- SECCIONES --- */
+        .menu-seccion {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .menu-seccion h2 {
+            font-size: 1.8rem;
+            color: var(--primario);
+            border-bottom: 2px solid var(--primario);
+            padding-bottom: 5px;
+            margin: 20px 0 15px 0;
+        }
+
+        /* --- TARJETAS DE LOS PLATOS --- */
+        .plato-card {
+            background: var(--tarjeta);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+        }
+
+        .plato-titulo {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .plato-desc {
+            font-size: 0.85rem;
+            color: var(--texto-secundario);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        /* --- LISTA DE PRECIOS DOBLES --- */
+        .precios-contenedor {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background-color: #fcfcfc;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .precio-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding: 3px 0;
+            border-bottom: 1px dotted #ccc;
+        }
+
+        .precio-row:last-child {
+            border-bottom: none;
+        }
+
+        .precio-valor {
+            font-weight: 700;
+            color: var(--primario);
+        }
+        /* --- ESTILOS DEL MENSAJE DE AVISO (POPUP) --- */
+        .modal-overlay {
+            position: fixed; /* Se queda fijo en la pantalla */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro semitransparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Asegura que esté por encima de toda la web */
+        }
+
+        .modal-contenido {
+            background-color: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 90%;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: aparecer 0.4s ease-out; /* Pequeña animación al salir */
+        }
+
+        @keyframes aparecer {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-contenido h2 {
+            color: var(--primario);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .modal-contenido p {
+            margin-bottom: 15px;
+            color: var(--texto-principal);
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .btn-entendido {
+            background-color: var(--primario);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="aviso-pago" class="modal-overlay">
+        <div class="modal-contenido">
+            <h2>🍕 ¡Bienvenidos a TOTY 2!</h2>
+            <p>Debido a problemas técnicos , en este momento <strong>no se aceptan pagos con tarjeta</strong>.</p>
+            <p>Por favor, disculpen las molestias. Solo aceptamos pagos en <strong>efectivo</strong>.</p>
+            <button class="btn-entendido" onclick="document.getElementById('aviso-pago').style.display='none'">Entendido</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>TOTY 2</h1>
+        <p>Pizzería - Bocatería</p>
+    </header>
+
+    <nav class="categorias-nav">
+        <a href="carta.html" class="categoria-btn">Pizzas</a>
+        <a href="kebabs.html" class="categoria-btn">Kebabs</a>
+        <a href="platos.html" class="categoria-btn">Platos</a>
+        <a href="patatas.html" class="categoria-btn">Patatas</a>
+        <a href="hamburguesas.html" class="categoria-btn">Hamburguesas</a>
+        <a href="pollo.html" class="categoria-btn">pollo</a>
+        <a href="bocadillos.html" class="categoria-btn">Bocadillos</a>
+        <a href="ensaladas.html" class="categoria-btn">Ensaladas</a>
+    </nav>
+
+    <!-- CONTENIDO DEL MENÚ -->
+    <main>
+        
+        <!-- SECCIÓN PIZZAS -->
+        <section id="pizzas" class="menu-seccion">
+            <h2>Pizzas</h2>
+            
+            <!-- Ejemplo de Pizza -->
+            <div class="plato-card">
+                <h3 class="plato-titulo">1. Margarita 🌼</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">2. Huevo 🥚</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano y Huevo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">3. Champiñones 🍄</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano y Champiñones</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">4. Jamon y champiñones 🐖🍄</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, jamon y Champiñones</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">5. Atun 🐟</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano y Atun</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">6. Napoli 🍕</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Atun, Anchoas y Olivas</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">7. Jamon 🐖</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano y Jamon</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">8. España 🇪🇸</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Jamon, Champiñones y Pimineto</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">9. Vegetariana 🥬</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Champiñones, Aceituna verde, Cebolla, Pimineto y Maiz</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">10. Sony 🍕</h3>
+                <p class="plato-desc">Nata, Queso, Orégano, Bacon, Jamon y Cebolla</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">11. Bacon 🥓</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Bacon y Cebolla</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">12. Boloñesa 🍕</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Bacon y Carne picada</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">13. Salami 🫘</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano y Salami</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">14. Pollo barbacoa 🍗</h3>
+                <p class="plato-desc">Salsa barbacoa, Queso, Orégano y Pollo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">15. Pollo 🍗</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano y Pollo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                                    <div class="plato-card">
+                <h3 class="plato-titulo">16. Calzone 🍕</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Atún, Salami, Jamón, Pimineto, Aceituna verde y Cebolla</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">17. Hawaiana 🍍</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Jamon y Piña</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">18. Cuatro quesos 🧀</h3>
+                <p class="plato-desc">Tomate, 4 Quesos, Orégano</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">19. Atun y verdura  🐟🥬</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Atún, Champiñones, Cebolla, Pimineto y Oliva verde</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">20. Pizza turca 🇹🇷</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Ternerra y Pollo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">21. Barbacoa 🍖</h3>
+                <p class="plato-desc">Salsa barbacoa, Queso, Orégano, Jamon, Bacon y Ternera</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">22. Barbacoa cremosa 🍖🍶</h3>
+                <p class="plato-desc">Salsa barbacoa, Queso, Orégano, Jamon, Champiñones y Maiz</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">23. La casa 🏠</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Jamon, Gambas, Champiñones, Aceitunas verdes, Cebolla y Maiz</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">24. Mac pizza bueno 👍</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Pollo, Cordero asado, Champiñones, Aceituna verde y Cebolla</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">25. Pizza Italia 🇮🇹</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Atun, Champiñones, Pimientos y Cebolla</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>            <div class="plato-card">
+                <h3 class="plato-titulo">26. Miramare 🌊</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Jamon, Champiñones, Cebolla y Gambas</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">27. Alicante 🌅</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Atun, Champiñones, Jamon y Salami</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>            <div class="plato-card">
+                <h3 class="plato-titulo">28. Pizza granja 🍕</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Gambas, Pimientos, Olivas verdes, Ternera, champiñones, Atun y Huevo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">29. Completa 🍕</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Atun, Jamon, Champiñones, Pimientos, Cebolla y Olivas verdes</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>            <div class="plato-card">
+                <h3 class="plato-titulo">30. Pepperroni 🍕🌶️</h3>
+                <p class="plato-desc">Tomate, Orégano, Mozzarella y Pepperoni</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                    <div class="plato-card">
+                <h3 class="plato-titulo">31. Carbonara 🍕🍶</h3>
+                <p class="plato-desc">Tomate, Nata, Mozzarella, Orégano, Bacon, Cebolla y Huevo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">32. Caprichosa 🍕</h3>
+                <p class="plato-desc">Tomate, Mozzarella, Orégano, Atun y Pepperoni</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+                        <div class="plato-card">
+                <h3 class="plato-titulo">33. Americana 🇺🇸</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Jamon y Huevo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">34. Americana 1 🇺🇸</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Bacon y Huevo</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>            <div class="plato-card">
+                <h3 class="plato-titulo">35. Romana 🇷🇴</h3>
+                <p class="plato-desc">Salsa barbacoa, Mozzarella, Orégano, Bacon, Ternera y Maiz </p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">36. Popular ✨</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Ternera, Patatas y Maiz</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>            <div class="plato-card">
+                <h3 class="plato-titulo">37. Pizza TOTY</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano, Jamon y Bacon</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">38. Cuatro carnes 🥩</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>            <div class="plato-card">
+                <h3 class="plato-titulo">39. Arabe 🐫</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+            </div>
+             <div class="plato-card">
+                <h3 class="plato-titulo">40.</h3>
+                <p class="plato-desc">Tomate, Queso, Orégano</p>
+                <div class="precios-contenedor">
+                    <div class="precio-row"><span>Mediana</span> <span class="precio-valor">8,00€</span></div>
+                    <div class="precio-row"><span>Familiar</span> <span class="precio-valor">13,00€</span></div>
+                </div>
+    </main>
+
+</body>
+</html>
